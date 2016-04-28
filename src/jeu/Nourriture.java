@@ -13,9 +13,6 @@ class Nourriture extends PApplet {
 	/* Existence de la nourriture */
 	private boolean isExistent;
 
-	/* Energie du gentil */
-	private int energie;
-
 	public Nourriture(int x, int y, boolean isExistent) {
 		this.x = x;
 		this.y = y;
@@ -42,21 +39,6 @@ class Nourriture extends PApplet {
 			image(imageNourriture, x - 50, y - 50);
 		}
 	}
-
-	/**
-	 * Manger de la nourriture pour augmenter sa santer
-	 */
-	public void manger() {
-		if (isExistent) {
-			energie = energie + 10;
-		}
-		if (energie > 194) {
-			energie = 194;
-		}
-		isExistent = false;
-		x = y = -100; // permet de ne pas remanger une nourriture apr\u00e8s un
-						// clic
-	}
 	
 	public int getX() {
 		return x;
@@ -80,13 +62,5 @@ class Nourriture extends PApplet {
 
 	public void setExistent(boolean isExistent) {
 		this.isExistent = isExistent;
-	}
-
-	public int getEnergie() {
-		return energie;
-	}
-
-	public void setEnergie(int energie) {
-		this.energie = energie;
 	}
 }

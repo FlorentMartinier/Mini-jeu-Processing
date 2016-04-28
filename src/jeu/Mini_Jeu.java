@@ -1,33 +1,17 @@
 package jeu;
 
 import processing.core.*;
-import processing.xml.*;
-
-import java.applet.*;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.event.MouseEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.FocusEvent;
-import java.awt.Image;
-import java.io.*;
-import java.net.*;
-import java.text.*;
-import java.util.*;
-import java.util.zip.*;
-import java.util.regex.*;
 
 public class Mini_Jeu extends PApplet {
 	private static final long serialVersionUID = -2331210285961685039L;
-	Gentil florent = new Gentil(100, 100); // notre h\u00e9ros !
-	Nourriture[] Gland = new Nourriture[10]; // la nourriture
-	Mechant Nicolas = new Mechant(PApplet.parseInt(random(800)), PApplet.parseInt(random(800)), 10, 10, false); // le
+	Gentil gentil = new Gentil(100, 100, 195); // notre h\u00e9ros !
+	Nourriture[] nourriture = new Nourriture[10]; // la nourriture
+	Mechant mechant = new Mechant(PApplet.parseInt(random(800)), PApplet.parseInt(random(800)), 10, 10, false); // le
 																												// m\u00e9chant
 																												// !
-	Ball Masterball = new Ball(PApplet.parseInt(random(800)), PApplet.parseInt(random(800)), 10, 10, false); // un
+	Ball ball = new Ball(PApplet.parseInt(random(800)), PApplet.parseInt(random(800)), 10, 10, false); // un
 																												// \u00e9l\u00e9ment
 																												// perturbateur
-	int energie = 195;
 	int savedTime; // instauration d'un timer
 	int totalTime = 1000;
 	float[] distance = new float[10];
@@ -35,7 +19,7 @@ public class Mini_Jeu extends PApplet {
 
 	public void setup() {
 		for (int i = 0; i < 10; i++) {
-			Gland[i] = new Nourriture((int) random(800), (int) random(800), false);
+			nourriture[i] = new Nourriture((int) random(800), (int) random(800), false);
 		}
 		size(800, 800);
 		savedTime = millis();
@@ -43,17 +27,15 @@ public class Mini_Jeu extends PApplet {
 
 	public void draw() {
 		for (int i = 0; i < 10; i++) {
-			// distance h\u00e9ros / nourriture :
-			distance[i] = sqrt((Gland[i].getX() - florent.getX() - 5) * (Gland[i].getX() - florent.getX() - 5)
-					+ (Gland[i].getY() - florent.getY() - 10) * (Gland[i].getY() - florent.getY() - 10));
+			// distance héros / nourriture :
+			Outils.calculerDistanceNourriture(gentil, nourriture[i]);
 		}
-		// distance h\u00e9ros / m\u00e9chant :
-		float distance_mechant = sqrt((Nicolas.getX() - florent.getX()) * (Nicolas.getX() - florent.getX())
-				+ (Nicolas.getY() - florent.getY()) * (Nicolas.getY() - florent.getY()));
-		if (distance_poke > 25 && Masterball.isExistent()) {
-			// distance h\u00e9ros / masterball :
-			distance_poke = sqrt((Masterball.getX() - florent.getX() - 5) * (Masterball.getX() - florent.getX() - 5)
-					+ (Masterball.getY() - florent.getY() - 10) * (Masterball.getY() - florent.getY() - 10));
+		// distance héros / méchant :
+		float distance_mechant = Outils.calculerDistanceMechant(gentil, mechant);
+		if (distance_poke > 25 && ball.isExistent()) {
+			// distance héros / masterball :
+			distance_poke = sqrt((ball.getX() - gentil.getX() - 5) * (ball.getX() - gentil.getX() - 5)
+					+ (ball.getY() - gentil.getY() - 10) * (ball.getY() - gentil.getY() - 10));
 		}
 		if (distance_poke > 25) {
 			// les 3 prochaines lignes peuvent \u00eatre remplac\u00e9es par un
@@ -67,47 +49,52 @@ public class Mini_Jeu extends PApplet {
 			text("'z' = ennemie", 680, 20);
 			text("clic = nourriture", 659, 40);
 			text("'p' = surprise !", 670, 60);
-			florent.afficher();
+			gentil.afficher();
 			for (int i = 0; i < 10; i++) {
-				Gland[i].afficher();
+				nourriture[i].afficher();
 			}
-			florent.afficherVie();
-			florent.baisserVieAvecTemps();
+			gentil.afficherVie();
+			gentil.baisserVieAvecTemps();
 		}
 		for (int i = 0; i < 10; i++) {
 			if (distance[i] < 25) {
-				Gland[i].manger();
+				gentil.manger(nourriture[i]);
 			}
 		}
-		Masterball.afficher();
-		Nicolas.afficher();
-		Nicolas.bouger();
-		Nicolas.rebondir();
-		Nicolas.mourrir();
+		ball.afficher();
+		mechant.afficher();
+		mechant.bouger();
+		mechant.rebondir();
+		gentil.mourrir();
 		if (distance_mechant < 25) {
-			Nicolas.attaquer();
+			mechant.attaquer(gentil);
 		}
-		Masterball.afficher();
-		Masterball.bouger();
-		Masterball.rebondir();
+		ball.afficher();
+		ball.bouger();
+		if (ball.toucherMurHauteur()){
+			ball.rebondirHauteur();			
+		}
+		if (ball.toucherMurLargeur()){
+			ball.rebondirLargeur();			
+		}
 		if (distance_poke < 25) {
-			Masterball.capturer();
+			ball.capturer();
 		}
 	}
 
 	public void keyPressed() {
 		if (key == CODED) {
 			if (keyCode == DOWN) {
-				florent.faireMouvementBas();
+				gentil.faireMouvementBas();
 			}
 			if (keyCode == RIGHT) {
-				florent.faireMouvementdroite();
+				gentil.faireMouvementdroite();
 			}
 			if (keyCode == LEFT) {
-				florent.faireMouvementgauche();
+				gentil.faireMouvementgauche();
 			}
 			if (keyCode == UP) {
-				florent.faireMouvementHaut();
+				gentil.faireMouvementHaut();
 			}
 		}
 	}

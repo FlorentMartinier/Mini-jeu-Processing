@@ -16,9 +16,6 @@ class Mechant extends PApplet {
 	/* Vrai si le méchant est présent sur la map */
 	private boolean isExistent;
 
-	/* Vie du méchant */
-	private int energie;
-
 	/**
 	 * Constructeur
 	 * 
@@ -84,28 +81,15 @@ class Mechant extends PApplet {
 	/**
 	 * Attaquer le gentil
 	 */
-	public void attaquer() {
+	public void attaquer(Gentil gentil) {
 		if (isExistent) {
-			energie = energie - 50;
+			gentil.setVie(gentil.getVie() - 50);
 			isExistent = false;
 
 			// Réinitialiser les coordonnées du méchant pour sa prochaine
 			// apparition
 			x = PApplet.parseInt(random(800));
 			y = PApplet.parseInt(random(800));
-		}
-	}
-
-	/**
-	 * Faire mourrir le héro
-	 */
-	public void mourrir() {
-		if (energie <= 0) {
-			background(0);
-			textSize(100);
-			fill(255, 0, 0);
-			text("Game Over", 150, 400);
-			isExistent = false;
 		}
 	}
 
@@ -147,13 +131,5 @@ class Mechant extends PApplet {
 
 	public void setVitesseY(int vitesseY) {
 		this.vitesseY = vitesseY;
-	}
-
-	public int getEnergie() {
-		return energie;
-	}
-
-	public void setEnergie(int energie) {
-		this.energie = energie;
 	}
 }

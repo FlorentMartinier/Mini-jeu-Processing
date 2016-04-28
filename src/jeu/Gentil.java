@@ -16,38 +16,6 @@ public class Gentil extends PApplet {
 	private int savedTime; // instauration d'un timer
 	private int totalTime = 1000;
 
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getVie() {
-		return vie;
-	}
-
-	public void setVie(int vie) {
-		this.vie = vie;
-	}
-
-	public int getSavedTime() {
-		return savedTime;
-	}
-
-	public void setSavedTime(int savedTime) {
-		this.savedTime = savedTime;
-	}
-
-	public int getTotalTime() {
-		return totalTime;
-	}
-
-	public void setTotalTime(int totalTime) {
-		this.totalTime = totalTime;
-	}
-
 	/**
 	 * Constructeur du gentil (définission d'une abscisse et d'une ordonnée)
 	 * 
@@ -56,9 +24,10 @@ public class Gentil extends PApplet {
 	 * @param y
 	 *            ordonnée
 	 */
-	public Gentil(int x, int y) {
+	public Gentil(int x, int y, int vie) {
 		this.x = x;
 		this.y = y;
+		this.vie = vie;
 	}
 
 	/**
@@ -134,5 +103,64 @@ public class Gentil extends PApplet {
 				savedTime = millis();
 			}
 		}
+	}
+
+	/**
+	 * Manger de la nourriture pour augmenter sa santer
+	 */
+	public void manger(Nourriture nourriture) {
+		if (nourriture.isExistent()) {
+			vie = vie + 10;
+		}
+		if (vie > 194) {
+			vie = 194;
+		}
+		nourriture.setExistent(false);
+		x = y = -100; // permet de ne pas remanger une nourriture apr\u00e8s un
+						// clic
+	}
+
+	/**
+	 * Faire mourrir le héro
+	 */
+	public void mourrir() {
+		if (vie <= 0) {
+			background(0);
+			textSize(100);
+			fill(255, 0, 0);
+			text("Game Over", 150, 400);
+		}
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getVie() {
+		return vie;
+	}
+
+	public void setVie(int vie) {
+		this.vie = vie;
+	}
+
+	public int getSavedTime() {
+		return savedTime;
+	}
+
+	public void setSavedTime(int savedTime) {
+		this.savedTime = savedTime;
+	}
+
+	public int getTotalTime() {
+		return totalTime;
+	}
+
+	public void setTotalTime(int totalTime) {
+		this.totalTime = totalTime;
 	}
 }

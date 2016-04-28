@@ -83,15 +83,37 @@ class Ball extends PApplet {
 	}
 
 	/**
-	 * Faire rebondir la balle sur les murs en changeant de trajectoire
+	 * Faire rebondir la balle sur les murs en hauteur
 	 */
-	public void rebondir() {
+	public void rebondirHauteur() {
+		vitesseX = -vitesseX;
+	}
+
+	/**
+	 * Faire rebondir la balle sur les murs en largeur
+	 */
+	public void rebondirLargeur() {
+		vitesseY = -vitesseY;
+	}
+
+	/**
+	 * @return Vrai si les coordonnées de la balle sont sur un mur en hauteur
+	 */
+	public boolean toucherMurHauteur() {
 		if (x > width - 10 || x < 10) {
-			vitesseX = -vitesseX;
+			return true;
 		}
+		return false;
+	}
+
+	/**
+	 * @return Vrai si les coordonnées de la balle sont sur un mur en largeur
+	 */
+	public boolean toucherMurLargeur() {
 		if (y > height - 10 || y < 10) {
-			vitesseY = -vitesseY;
+			return true;
 		}
+		return false;
 	}
 
 	/**
