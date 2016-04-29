@@ -1,9 +1,10 @@
-package jeu;
+package modele;
 
 import processing.core.PApplet;
 import processing.core.PImage;
 
-class Nourriture extends PApplet {
+// TODO extends Element afficher
+public class Nourriture extends PApplet {
 
 	private static final long serialVersionUID = -5401351733796883435L;
 

@@ -1,5 +1,10 @@
-package jeu;
+/*package controller;
 
+import modele.Ball;
+import modele.Gentil;
+import modele.Mechant;
+import modele.Nourriture;
+import outils.Outils;
 import processing.core.*;
 
 public class Mini_Jeu extends PApplet {
@@ -103,3 +108,4 @@ public class Mini_Jeu extends PApplet {
 		PApplet.main(new String[] { "--bgcolor=#F0F0F0", "call_of_gland" });
 	}
 }
+*/
