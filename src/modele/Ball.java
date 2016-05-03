@@ -2,6 +2,8 @@ package modele;
 
 public class Ball extends Perturbateur {
 
+	private static final long serialVersionUID = -786874141870123144L;
+
 	/**
 	 * Constructeur
 	 * 

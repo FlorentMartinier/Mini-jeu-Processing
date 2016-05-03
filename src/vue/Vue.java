@@ -1,11 +1,7 @@
 package vue;
 
-import modele.Creature;
-import modele.ElementAffiche;
 import modele.Gentil;
-import modele.Mechant;
 import processing.core.PApplet;
-import processing.core.PImage;
 
 /**
  * Classe gérant tous les affichages graphiques
@@ -49,33 +45,16 @@ public class Vue extends PApplet {
 		fill(255, 0, 0);
 		text("Game Over", 150, 400);
 	}
-	
-	/**
-	 * Afficher une creature sur la map
-	 */
-	public void afficher(ElementAffiche creature) {
-		PImage image;
 
-		// Chargement de l'image adaptée
-		if (creature instanceof Gentil) {
-			image = loadImage("mrbean.gif");
-		} else if (creature instanceof Mechant) {
-			image = loadImage("nosferapti.png");
-		} else {
-			image = loadImage("masterball.png");
-		}
-
-		// Affichage de l'image aux coordonnées de la créature
-		image(image, creature.getX(), creature.getY());
-		noStroke();
-	}
-	
 	/**
 	 * Définir les tailles de la fenêtre à afficher
-	 * @param longueur Longueur de la fenêtre
-	 * @param largeur Largeur de la fenêtre
+	 * 
+	 * @param longueur
+	 *            Longueur de la fenêtre
+	 * @param largeur
+	 *            Largeur de la fenêtre
 	 */
-	public void definirFenetre(int longueur, int largeur){
+	public void definirFenetre(int longueur, int largeur) {
 		size(longueur, largeur);
 	}
 }

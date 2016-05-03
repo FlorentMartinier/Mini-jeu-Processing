@@ -26,10 +26,8 @@ public class Jeu extends PApplet {
 	/*
 	 * Initialisation de l'application. Instruction s'éxécutant une seule fois
 	 * au démarrage.
-	 * 
-	 * @see processing.core.PApplet#setup()
 	 */
-	public void setup() {
+	public void initialiser() {
 
 		// Définition de la taille de la fenêtre
 		vue.definirFenetre(800, 800);
@@ -41,26 +39,35 @@ public class Jeu extends PApplet {
 	}
 
 	/*
-	 * Instructions s'exécutant régulièrement (équivaut à un while(true))
-	 * 
-	 * @see processing.core.PApplet#draw()
+	 * Boucle de jeu
 	 */
-	public void draw() {
-		// TODO définir l'intelligence de jeu
-		if (keyPressed) {
-			gererEvenementClavier();
-		}
+	public void jouerBoucle() {
+		while (true) {
+			
+			if (keyPressed) {
+				gererEvenementClavier();
+			}
 
-		if (ball.isExistent()) {
-			vue.capturer();
-			ball.setExistent(false);
-		}
-		
-		if (mechant.isExistent()){
-			mechant.attaquer(gentil);
-		}
+			if (ball.isExistent()) {
+				vue.capturer();
+				ball.setExistent(false);
+			}
 
-		vue.afficherVie(gentil);
+			if (mechant.isExistent()) {
+				mechant.attaquer(gentil);
+			}
+
+			// Afficher la nourriture après un clic
+			if (mousePressed) {
+				nourriture.setExistent(true);
+
+				// Réinitialiser les coordonnées après chaque clic
+				nourriture.setX((int) random(800));
+				nourriture.setY((int) random(800));
+			}
+
+			vue.afficherVie(gentil);
+		}
 	}
 
 	/**
@@ -118,6 +125,21 @@ public class Jeu extends PApplet {
 			mechant.setExistent(true);
 		} else if (key == 'p') {
 			ball.setExistent(true);
+		}
+	}
+	
+	/**
+	 * Détecter si des éléments sont à afficher sur la map
+	 */
+	public void afficherElements(){
+		if (mechant.isExistent()){
+			mechant.afficher();
+		}
+		if (nourriture.isExistent()){
+			nourriture.afficher();
+		}
+		if (ball.isExistent()){
+			ball.afficher();
 		}
 	}
 }

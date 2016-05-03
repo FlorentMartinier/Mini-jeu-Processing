@@ -2,6 +2,8 @@ package modele;
 
 public class Mechant extends Perturbateur {
 
+	private static final long serialVersionUID = 7788701291105040600L;
+
 	/**
 	 * Constructeur
 	 * 

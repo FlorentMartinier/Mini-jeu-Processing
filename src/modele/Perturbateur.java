@@ -6,6 +6,8 @@ package modele;
  */
 public class Perturbateur extends Creature{
 
+	private static final long serialVersionUID = 5950417307394558418L;
+
 	/* Indices de déplacement */
 	private int vitesseX, vitesseY;
 

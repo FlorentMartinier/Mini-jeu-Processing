@@ -2,6 +2,8 @@ package modele;
 
 public class Gentil extends Creature {
 
+	private static final long serialVersionUID = -3885075704467689570L;
+ 
 	/* Vie du gentil */
 	private int vie;
 
