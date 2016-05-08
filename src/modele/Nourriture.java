@@ -2,8 +2,6 @@ package modele;
 
 public class Nourriture extends ElementAffiche {
 
-	private static final long serialVersionUID = 6262583263497942923L;
-	 
 	/* Existence de la nourriture */
 	private boolean isExistent;
 
@@ -11,7 +9,7 @@ public class Nourriture extends ElementAffiche {
 		super(x, y);
 		this.isExistent = isExistent;
 	}
-	
+
 	public boolean isExistent() {
 		return isExistent;
 	}

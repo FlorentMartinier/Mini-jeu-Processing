@@ -1,10 +1,10 @@
 package modele;
 
+import processing.core.PApplet;
+
 public class Gentil extends Creature {
 
-	private static final long serialVersionUID = -3885075704467689570L;
- 
-	/* Vie du gentil */
+	/** Vie du gentil */
 	private int vie;
 
 	/**
@@ -64,6 +64,25 @@ public class Gentil extends Creature {
 		nourriture.setExistent(false);
 	}
 
+	/**
+	 * Faire baisser la vie du gentil avec le temps
+	 * 
+	 * @param tempsDebut
+	 * @param tempsTotal
+	 * @param applet
+	 * @return
+	 */
+	public int baisserVieAvecTemps(int tempsDebut, int tempsTotal, PApplet applet) {
+		int tempsPasse = applet.millis() - tempsDebut;
+		if (tempsPasse > tempsTotal) {
+			if (getVie() > 0) {
+				setVie(getVie() - 1);
+				return applet.millis();
+			}
+		}
+		return tempsDebut;
+	}
+
 	public int getVie() {
 		return vie;
 	}
@@ -71,5 +90,4 @@ public class Gentil extends Creature {
 	public void setVie(int vie) {
 		this.vie = vie;
 	}
-
 }

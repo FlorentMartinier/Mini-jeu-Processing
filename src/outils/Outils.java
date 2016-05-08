@@ -1,25 +1,24 @@
 package outils;
 
-import modele.Creature;
-import processing.core.PApplet;
+import modele.ElementAffiche;
 
 /**
  * Classe contenant toutes les distances d'objets par rapport au gentil
+ * 
  * @author florent
  *
  */
-public class Outils extends PApplet{
+public class Outils {
 
-	private static final long serialVersionUID = 3312664350180331083L;
-	
 	/**
-	 * Calculer la distance entre deux creatures
-	 * @param creature1
-	 * @param creature2
-	 * @return Distance entre le gentil et le méchant
+	 * Calculer la distance entre deux éléments de la map
+	 * 
+	 * @param element1
+	 * @param element2
+	 * @return Distance entre deux éléments de la map
 	 */
-	public static float calculerDistanceMechant(Creature creature1, Creature creature2){
-		return sqrt((creature2.getX() - creature1.getX()) * (creature2.getX() - creature1.getX())
-				+ (creature2.getY() - creature1.getY()) * (creature2.getY() - creature1.getY()));
-	}	
+	public static double calculerDistanceMechant(ElementAffiche element1, ElementAffiche element2) {
+		return Math.sqrt((element2.getX() - element1.getX()) * (element2.getX() - element1.getX())
+				+ (element2.getY() - element1.getY()) * (element2.getY() - element1.getY()));
+	}
 }

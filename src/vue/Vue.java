@@ -8,53 +8,62 @@ import processing.core.PApplet;
  * 
  * @author florent
  */
-public class Vue extends PApplet {
-
-	private static final long serialVersionUID = 1742406531380778781L;
+public class Vue {
 
 	/**
 	 * Si la master ball touche notre héro, il se fait capturer ! N'oublions pas
 	 * que la master ball est unique et capture à tous les coups !
 	 */
-	public void capturer() {
-		background(0);
-		textSize(50);
-		fill(255, 0, 0);
-		text("vous êtes capturé !", 170, 400);
+	public void afficherCapturer(PApplet applet) {
+		applet.background(0);
+		applet.textSize(50);
+		applet.fill(255, 0, 0);
+		applet.text("vous êtes capturé !", 170, 400);
 	}
 
 	/**
 	 * Afficher la vie du gentil
 	 */
-	public void afficherVie(Gentil gentil) {
-		fill(0);
-		rect(21, 21, 196, 17);
-		fill(255, 0, 0);
-		rect(22, 22, gentil.getVie(), 15);
-		fill(0);
-		textSize(20);
-		text("Santé", 20, 20);
+	public void afficherVie(Gentil gentil, PApplet applet) {
+		applet.fill(0);
+		applet.rect(21, 21, 196, 17);
+		applet.fill(255, 0, 0);
+		applet.rect(22, 22, gentil.getVie(), 15);
+		applet.fill(0);
+		applet.textSize(20);
+		applet.text("Santé", 20, 20);
 	}
 
 	/**
 	 * Affiche le message de fin du jeu
 	 */
-	public void gameOver() {
-		background(0);
-		textSize(100);
-		fill(255, 0, 0);
-		text("Game Over", 150, 400);
+	public void afficherGameOver(PApplet applet) {
+		applet.background(0);
+		applet.textSize(100);
+		applet.fill(255, 0, 0);
+		applet.text("Game Over", 150, 400);
 	}
 
 	/**
-	 * Définir les tailles de la fenêtre à afficher
+	 * Afficher les informations concernant les interactions clavier et souris à
+	 * l'utilisateur.
 	 * 
-	 * @param longueur
-	 *            Longueur de la fenêtre
-	 * @param largeur
-	 *            Largeur de la fenêtre
+	 * @param applet
 	 */
-	public void definirFenetre(int longueur, int largeur) {
-		size(longueur, largeur);
+	public void afficherInformations(PApplet applet) {
+		applet.fill(0);
+		applet.text("'z' = ennemie", 680, 20);
+		applet.text("clic = nourriture", 659, 40);
+		applet.text("'p' = surprise !", 670, 60);
+	}
+
+	/**
+	 * Afficher le fond de la map
+	 * 
+	 * @param applet
+	 *            instance de l'application sur laquelle afficher les décors
+	 */
+	public void afficherDecors(PApplet applet) {
+		applet.background(255);
 	}
 }

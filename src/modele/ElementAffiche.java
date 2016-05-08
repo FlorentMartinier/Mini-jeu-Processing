@@ -1,5 +1,6 @@
 package modele;
 
+import outils.Outils;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -9,9 +10,7 @@ import processing.core.PImage;
  * @author florent
  *
  */
-public class ElementAffiche extends PApplet {
-
-	private static final long serialVersionUID = -6275132595153172302L;
+public class ElementAffiche {
 
 	/** Coordonnées de l'élément */
 	private int x, y;
@@ -26,22 +25,39 @@ public class ElementAffiche extends PApplet {
 	/**
 	 * Initialiser l'image d'un élément
 	 */
-	public void initialiserImage() {
+	public void initialiserImage(PApplet applet) {
 		// Chargement de l'image adaptée
 		if (this instanceof Gentil) {
-			setImage(loadImage("mrbean.gif"));
+			setImage(applet.loadImage("mrbean.gif"));
 		} else if (this instanceof Mechant) {
-			setImage(loadImage("nosferapti.png"));
+			setImage(applet.loadImage("nosferapti.png"));
+		} else if (this instanceof Ball) {
+			setImage(applet.loadImage("masterball.png"));
 		} else {
-			setImage(loadImage("masterball.png"));
+			setImage(applet.loadImage("273.png"));
 		}
+	}
+
+	/**
+	 * Déterminer si deux éléments de la map se touchent
+	 * 
+	 * @param autreElement
+	 *            Element dont on veut savoir s'il touche l'instance actuelle
+	 * @return Vrai si l'instance actuelle et l'autre élément en paramètre se
+	 *         touchent
+	 */
+	public boolean toucher(ElementAffiche autreElement) {
+		if (Outils.calculerDistanceMechant(this, autreElement) < 25) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
 	 * Afficher l'image de l'élément courant
 	 */
-	public void afficher() {
-		image(pImage, x, y);
+	public void afficher(PApplet applet) {
+		applet.image(pImage, x, y);
 	}
 
 	public int getX() {

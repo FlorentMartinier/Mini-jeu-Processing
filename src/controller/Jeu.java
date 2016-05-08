@@ -1,7 +1,7 @@
 package controller;
 
 import modele.Ball;
-import modele.Creature;
+import modele.EtatPartie;
 import modele.Gentil;
 import modele.Mechant;
 import modele.Nourriture;
@@ -11,110 +11,128 @@ import vue.Vue;
 public class Jeu extends PApplet {
 
 	private static final long serialVersionUID = 2772472098256683184L;
+	private PApplet applet;
 
-	Gentil gentil;
-	Mechant mechant;
-	Ball ball;
-	Nourriture nourriture;
+	private Gentil gentil;
+	private Mechant mechant;
+	private Ball ball;
+	private Nourriture nourriture;
 
-	Vue vue;
+	private EtatPartie etatPartie;
+
+	private Vue vue;
 
 	/** Timer */
-	int tempsDebut;
-	int tempsTotal;
+	private int tempsDebut;
+	private int tempsTotal;
 
-	/*
+	/**
 	 * Initialisation de l'application. Instruction s'éxécutant une seule fois
 	 * au démarrage.
 	 */
-	public void initialiser() {
+	@Override
+	public void setup() {
+		applet = this;
+		vue = new Vue();
+		etatPartie = EtatPartie.EN_JEU;
 
 		// Définition de la taille de la fenêtre
-		vue.definirFenetre(800, 800);
+		applet.size(800, 800);
 
 		// Définition des acteurs
 		gentil = new Gentil(100, 100, 195);
-		tempsDebut = millis();
+		gentil.initialiserImage(applet);
+
+		mechant = new Mechant(100, 100, 10, 10, false);
+		mechant.initialiserImage(applet);
+
+		ball = new Ball(100, 100, 10, 10, false);
+		ball.initialiserImage(applet);
+
+		nourriture = new Nourriture(100, 100, false);
+		nourriture.initialiserImage(applet);
+
+		// Temps depuis le début de l'application
+		tempsDebut = applet.millis();
 		tempsTotal = 1000;
 	}
 
-	/*
-	 * Boucle de jeu
+	/**
+	 * Boucle de jeu (équivaut à un while true)
 	 */
-	public void jouerBoucle() {
-		while (true) {
-			
-			if (keyPressed) {
+	@Override
+	public void draw() {
+
+		// Si le gentil est caturé, le signaler
+		if (etatPartie == EtatPartie.GENTIL_CAPTURE) {
+			vue.afficherCapturer(applet);
+		}
+
+		// Si le gentil est mort, fin du jeu
+		else if (etatPartie == EtatPartie.GENTIL_MORT) {
+			vue.afficherGameOver(applet);
+		}
+
+		// Sinon le jeu continue
+		else {
+
+			// Afficher le décors de jeu et le gentil
+			vue.afficherDecors(applet);
+			gentil.afficher(applet);
+
+			// Gérer les interactions du méchant
+			if (mechant.isExistent()) {
+				mechant.afficherEtBouger(applet);
+				if (mechant.toucher(gentil)) {
+					mechant.attaquer(gentil);
+
+					// Si après l'attaque, le gentil n'a plus de vie, il est
+					// mort
+					if (gentil.getVie() < 1) {
+						etatPartie = EtatPartie.GENTIL_MORT;
+					}
+				}
+			}
+
+			// Gérer les interactions avec la ball
+			if (ball.isExistent()) {
+				ball.afficherEtBouger(applet);
+
+				// Si le gentil est touché par la ball, il est capturé
+				if (ball.toucher(gentil)) {
+					ball.setExistent(false);
+					mechant.setExistent(false);
+					etatPartie = EtatPartie.GENTIL_CAPTURE;
+				}
+			}
+
+			// Gérer les interactions avec la nourriture
+			if (nourriture.isExistent()) {
+				nourriture.afficher(applet);
+
+				// Si le gentil touche la nourriture, il la mange
+				if (gentil.toucher(nourriture)) {
+					gentil.manger(nourriture);
+				}
+			}
+
+			// Gérer les interactions avec le clavier
+			if (applet.keyPressed) {
 				gererEvenementClavier();
 			}
 
-			if (ball.isExistent()) {
-				vue.capturer();
-				ball.setExistent(false);
+			// Gérer les interactions avec la souris
+			if (applet.mousePressed) {
+				gererEvenementSouris();
 			}
 
-			if (mechant.isExistent()) {
-				mechant.attaquer(gentil);
-			}
+			// Afficher la vie du gentil et les informations pour l'utilisateur
+			vue.afficherVie(gentil, applet);
+			vue.afficherInformations(applet);
 
-			// Afficher la nourriture après un clic
-			if (mousePressed) {
-				nourriture.setExistent(true);
-
-				// Réinitialiser les coordonnées après chaque clic
-				nourriture.setX((int) random(800));
-				nourriture.setY((int) random(800));
-			}
-
-			vue.afficherVie(gentil);
+			// Faire baisser la vie du gentil avec le temps
+			tempsDebut = gentil.baisserVieAvecTemps(tempsDebut, tempsTotal, applet);
 		}
-	}
-
-	/**
-	 * Faire rebondir le méchant sur les murs en changeant sa trajectoire
-	 */
-	public void rebondir() {
-		// width et height sont la largeur et la longueur de la fenêtre affichée
-		// (calculée par PApplet)
-		if (mechant.getX() > width - 10 || mechant.getX() < 10) {
-			mechant.setVitesseX(-mechant.getVitesseX());
-		}
-		if (mechant.getY() > height - 10 || mechant.getY() < 10) {
-			mechant.setVitesseY(-mechant.getVitesseY());
-		}
-	}
-
-	/**
-	 * Faire baisser la vie du gentil avec le temps
-	 */
-	public void baisserVieAvecTemps() {
-		int tempsPasse = millis() - tempsDebut;
-		if (tempsPasse > tempsTotal) {
-			if (gentil.getVie() > 0) {
-				gentil.setVie(gentil.getVie() - 1);
-				tempsDebut = millis();
-			}
-		}
-	}
-
-	/**
-	 * @return Vrai si les coordonnées de la balle sont sur un mur en hauteur
-	 */
-	public boolean toucherMurHauteur(Creature creature) {
-		if (creature.getX() > width - 10 || creature.getX() < 10) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @return Vrai si les coordonnées de la balle sont sur un mur en largeur
-	 */
-	public boolean toucherMurLargeur(Creature creature) {
-		if (creature.getY() > height - 10 || creature.getY() < 10) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -126,20 +144,39 @@ public class Jeu extends PApplet {
 		} else if (key == 'p') {
 			ball.setExistent(true);
 		}
+
+		// Mouvements du gentil
+		else if (key == CODED) {
+			if (keyCode == DOWN) {
+				gentil.faireMouvementBas();
+			}
+			if (keyCode == RIGHT) {
+				gentil.faireMouvementdroite();
+			}
+			if (keyCode == LEFT) {
+				gentil.faireMouvementgauche();
+			}
+			if (keyCode == UP) {
+				gentil.faireMouvementHaut();
+			}
+		}
 	}
-	
+
 	/**
-	 * Détecter si des éléments sont à afficher sur la map
+	 * Gérer les évenements au clic de la souris
 	 */
-	public void afficherElements(){
-		if (mechant.isExistent()){
-			mechant.afficher();
-		}
-		if (nourriture.isExistent()){
-			nourriture.afficher();
-		}
-		if (ball.isExistent()){
-			ball.afficher();
-		}
+	public void gererEvenementSouris() {
+
+		// Afficher la nourriture
+		nourriture.setExistent(true);
+		nourriture.setX(applet.mouseX - 50);
+		nourriture.setY(applet.mouseY - 50);
+	}
+
+	/**
+	 * Jouer le jeu
+	 */
+	public static void main(String[] args) {
+		PApplet.main(new String[] { Jeu.class.getName() });
 	}
 }
