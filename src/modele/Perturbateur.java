@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.Random;
+
 import processing.core.PApplet;
 
 /**
@@ -9,10 +11,10 @@ import processing.core.PApplet;
  */
 public class Perturbateur extends Creature {
 
-	/* Indices de déplacement */
+	/** Indices de déplacement */
 	private int vitesseX, vitesseY;
 
-	/* Vrai si le perturbateur est présent sur la map */
+	/** Vrai si le perturbateur est présent sur la map */
 	private boolean isExistent;
 
 	public Perturbateur(int x, int y, int vitesseX, int vitesseY, boolean isExistent) {
@@ -26,14 +28,24 @@ public class Perturbateur extends Creature {
 	 * Faire rebondir sur les murs en hauteur
 	 */
 	public void rebondirHauteur() {
-		setVitesseX(-getVitesseX());
+		Random random = new Random();
+		if (vitesseX > 0) {
+			setVitesseX(-random.nextInt(15) + 10);
+		} else {
+			setVitesseX(random.nextInt(15) + 10);
+		}
 	}
 
 	/**
 	 * Faire rebondir sur les murs en largeur
 	 */
 	public void rebondirLargeur() {
-		setVitesseY(-getVitesseY());
+		Random random = new Random();
+		if (vitesseY > 0) {
+			setVitesseY(-random.nextInt(15) + 10);
+		} else {
+			setVitesseY(random.nextInt(15) + 10);
+		}
 	}
 
 	/**
@@ -45,26 +57,51 @@ public class Perturbateur extends Creature {
 	}
 
 	/**
-	 * Détermine si le perturbateur touche un mur sur la hauteur
+	 * Détermine si le perturbateur sort de la map en hauteur <br/>
+	 * Si un élément est en dehors de la map, il est automatiquement remis
+	 * dedans
 	 * 
 	 * @return Vrai si les coordonnées de la balle sont sur un mur en hauteur
 	 */
-	public boolean toucherMurHauteur(PApplet applet) {
-		if (getX() > applet.width - 10 || getX() < 10) {
+	public boolean sortMapHauteur(PApplet applet) {
+		if (getX() > applet.width - 30) {
+
+			// Ramener l'élément dans la map
+			setX(applet.width - 30);
+			return true;
+		}
+
+		if (getX() < 0) {
+
+			// Ramener l'élément dans la map
+			setX(0);
 			return true;
 		}
 		return false;
 	}
 
 	/**
-	 * Détermine si le perturbateur touche un mur sur la largeur
+	 * Détermine si le perturbateur sort de la map en largeur <br/>
+	 * Si un élément est en dehors de la map, il est automatiquement remis
+	 * dedans
 	 * 
 	 * @return Vrai si les coordonnées de la balle sont sur un mur en largeur
 	 */
 	public boolean toucherMurLargeur(PApplet applet) {
-		if (getY() > applet.height - 10 || getY() < 10) {
+		if (getY() > applet.height - 30) {
+
+			// Ramener l'élément dans la map
+			setY(applet.height - 30);
 			return true;
 		}
+
+		if (getY() < 0) {
+
+			// Ramener l'élément dans la map
+			setY(0);
+			return true;
+		}
+
 		return false;
 	}
 
@@ -74,7 +111,7 @@ public class Perturbateur extends Creature {
 	 */
 	public void gererMouvements(PApplet applet) {
 		avancer();
-		if (toucherMurHauteur(applet)) {
+		if (sortMapHauteur(applet)) {
 			rebondirHauteur();
 		}
 		if (toucherMurLargeur(applet)) {

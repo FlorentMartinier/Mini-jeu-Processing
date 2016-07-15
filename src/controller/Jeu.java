@@ -41,16 +41,16 @@ public class Jeu extends PApplet {
 
 		// Définition des acteurs
 		gentil = new Gentil(100, 100, 195);
-		gentil.initialiserImage(applet);
+		gentil.initialiserImageElement(applet);
 
 		mechant = new Mechant(100, 100, 10, 10, false);
-		mechant.initialiserImage(applet);
+		mechant.initialiserImageElement(applet);
 
 		ball = new Ball(100, 100, 10, 10, false);
-		ball.initialiserImage(applet);
+		ball.initialiserImageElement(applet);
 
 		nourriture = new Nourriture(100, 100, false);
-		nourriture.initialiserImage(applet);
+		nourriture.initialiserImageElement(applet);
 
 		// Temps depuis le début de l'application
 		tempsDebut = applet.millis();
@@ -83,7 +83,7 @@ public class Jeu extends PApplet {
 			// Gérer les interactions du méchant
 			if (mechant.isExistent()) {
 				mechant.afficherEtBouger(applet);
-				if (mechant.toucher(gentil)) {
+				if (mechant.toucherElement(gentil)) {
 					mechant.attaquer(gentil);
 
 					// Si après l'attaque, le gentil n'a plus de vie, il est
@@ -99,7 +99,7 @@ public class Jeu extends PApplet {
 				ball.afficherEtBouger(applet);
 
 				// Si le gentil est touché par la ball, il est capturé
-				if (ball.toucher(gentil)) {
+				if (ball.toucherElement(gentil)) {
 					ball.setExistent(false);
 					mechant.setExistent(false);
 					etatPartie = EtatPartie.GENTIL_CAPTURE;
@@ -111,7 +111,7 @@ public class Jeu extends PApplet {
 				nourriture.afficher(applet);
 
 				// Si le gentil touche la nourriture, il la mange
-				if (gentil.toucher(nourriture)) {
+				if (gentil.toucherElement(nourriture)) {
 					gentil.manger(nourriture);
 				}
 			}

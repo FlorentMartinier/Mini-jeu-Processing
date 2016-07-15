@@ -1,6 +1,6 @@
 package modele;
 
-import outils.Outils;
+import Outils.Constantes;
 import processing.core.PApplet;
 import processing.core.PImage;
 
@@ -25,16 +25,17 @@ public class ElementAffiche {
 	/**
 	 * Initialiser l'image d'un élément
 	 */
-	public void initialiserImage(PApplet applet) {
+	public void initialiserImageElement(PApplet applet) {
+
 		// Chargement de l'image adaptée
 		if (this instanceof Gentil) {
-			setImage(applet.loadImage("mrbean.gif"));
+			setImage(applet.loadImage(Constantes.ImageGentil));
 		} else if (this instanceof Mechant) {
-			setImage(applet.loadImage("nosferapti.png"));
+			setImage(applet.loadImage(Constantes.ImageMechant));
 		} else if (this instanceof Ball) {
-			setImage(applet.loadImage("masterball.png"));
+			setImage(applet.loadImage(Constantes.ImageBall));
 		} else {
-			setImage(applet.loadImage("273.png"));
+			setImage(applet.loadImage(Constantes.ImageNourriture));
 		}
 	}
 
@@ -46,11 +47,32 @@ public class ElementAffiche {
 	 * @return Vrai si l'instance actuelle et l'autre élément en paramètre se
 	 *         touchent
 	 */
-	public boolean toucher(ElementAffiche autreElement) {
-		if (Outils.calculerDistanceMechant(this, autreElement) < 25) {
+	public boolean toucherElement(ElementAffiche autreElement) {
+		if (calculerDistanceElements(this, autreElement) < 25) {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Calculer la distance entre deux éléments de la map
+	 * 
+	 * @param element1
+	 * @param element2
+	 * @return Distance entre deux éléments de la map
+	 */
+	public static double calculerDistanceElements(ElementAffiche element1, ElementAffiche element2) {
+
+		// Coordonnées de l'élément 1
+		int x1 = element1.getX();
+		int y1 = element1.getY();
+
+		// Coordonnées de l'élément 2
+		int x2 = element2.getX();
+		int y2 = element2.getY();
+
+		// Calcul de distance entre deux positions
+		return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	}
 
 	/**

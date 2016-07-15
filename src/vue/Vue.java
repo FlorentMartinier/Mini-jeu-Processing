@@ -1,5 +1,6 @@
 package vue;
 
+import Outils.Constantes;
 import modele.Gentil;
 import processing.core.PApplet;
 
@@ -18,7 +19,7 @@ public class Vue {
 		applet.background(0);
 		applet.textSize(50);
 		applet.fill(255, 0, 0);
-		applet.text("vous êtes capturé !", 170, 400);
+		applet.text(Constantes.Capture, 170, 400);
 	}
 
 	/**
@@ -31,7 +32,7 @@ public class Vue {
 		applet.rect(22, 22, gentil.getVie(), 15);
 		applet.fill(0);
 		applet.textSize(20);
-		applet.text("Santé", 20, 20);
+		applet.text(Constantes.Sante, 20, 20);
 	}
 
 	/**
@@ -41,7 +42,7 @@ public class Vue {
 		applet.background(0);
 		applet.textSize(100);
 		applet.fill(255, 0, 0);
-		applet.text("Game Over", 150, 400);
+		applet.text(Constantes.GameOver, 150, 400);
 	}
 
 	/**
@@ -52,9 +53,9 @@ public class Vue {
 	 */
 	public void afficherInformations(PApplet applet) {
 		applet.fill(0);
-		applet.text("'z' = ennemie", 680, 20);
-		applet.text("clic = nourriture", 659, 40);
-		applet.text("'p' = surprise !", 670, 60);
+		applet.text(Constantes.ClicEnnemie, 680, 20);
+		applet.text(Constantes.ClicNourriture, 659, 40);
+		applet.text(Constantes.ClicSurprise, 670, 60);
 	}
 
 	/**
